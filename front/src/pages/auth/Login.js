@@ -3,12 +3,11 @@ import { auth, googleAuthProvider } from "../../firebase";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { createOrUpdateUser } from "../../functions/auth";
+import { createOrUpdateUser } from "../../connections/auth";
 
 //antd
 import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
-
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -24,17 +23,16 @@ const Login = ({ history }) => {
 
   const roleBasedRedirect = (res) => {
     if (res.data.role === "admin") {
-      history.push("/admin/dashboard");
+      history.push("/");
     } else {
-      history.push("/user/history");
+      history.push("/");
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-     //console.table(email, password);
+    //console.table(email, password);
     try {
       const result = await auth.signInWithEmailAndPassword(email, password);
       // console.log(result);
@@ -55,10 +53,9 @@ const Login = ({ history }) => {
           });
           roleBasedRedirect(res);
         })
-        .catch((err) => console.log(err));     
+        .catch((err) => console.log(err));
 
       //history.push("/");
-
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -73,20 +70,20 @@ const Login = ({ history }) => {
         const { user } = result;
         const idTokenResult = await user.getIdTokenResult();
         createOrUpdateUser(idTokenResult.token)
-        .then((res) => {
-          dispatch({
-            type: "LOGGED_IN_USER",
-            payload: {
-              name: res.data.name,
-              email: res.data.email,
-              token: idTokenResult.token,
-              role: res.data.role,
-              _id: res.data._id,
-            },
-          });
-          roleBasedRedirect(res);
-        })
-        .catch((err) => console.log(err));
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+            roleBasedRedirect(res);
+          })
+          .catch((err) => console.log(err));
         //history.push("/");
       })
       .catch((err) => {
@@ -95,7 +92,6 @@ const Login = ({ history }) => {
       });
   };
 
-  
   const loginForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -139,7 +135,7 @@ const Login = ({ history }) => {
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-        {loading ? (
+          {loading ? (
             <h4 className="text-danger">Loading...</h4>
           ) : (
             <h4>Login</h4>
@@ -160,7 +156,6 @@ const Login = ({ history }) => {
             Forgot Password
           </Link>
         </div>
-        
       </div>
     </div>
   );

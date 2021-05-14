@@ -11,9 +11,9 @@ import {
   UserOutlined,
   UserAddOutlined,
   LogoutOutlined,
+  FolderAddOutlined,
+  FileAddOutlined,
 } from "@ant-design/icons";
-
-
 
 const { SubMenu, Item } = Menu;
 
@@ -21,11 +21,12 @@ const Header = () => {
   const [current, setCurrent] = useState("home");
 
   let dispatch = useDispatch();
-  let { user } = useSelector((state) => ({...state})) // access redux and get state
+  let { user } = useSelector((state) => ({ ...state }));
   let history = useHistory();
 
   const handleClick = (e) => {
-    // console.log(e.key);
+    console.log(e.key);
+    console.log(user);
     setCurrent(e.key);
   };
 
@@ -35,36 +36,37 @@ const Header = () => {
       type: "LOGOUT",
       payload: null,
     });
-    history.push("/login");
+    history.push("/home");
   };
 
   return (
     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
       <Item key="home" icon={<AppstoreOutlined />}>
         <Link to="/">Home</Link>
-        {/* {JSON.stringify(user)} */}
       </Item>
 
       {!user && (
-      <Item key="register" icon={<UserAddOutlined />} className="float-right">
-        <Link to="/register">Register</Link>
-      </Item>
-      )}
-      
-      {!user && (
-      <Item key="login" icon={<UserOutlined />} className="float-right">
-        <Link to="/login">Login</Link>
-      </Item>
+        <Item key="login" icon={<UserOutlined />} className="float-right">
+          <Link to="/login">Login</Link>
+        </Item>
       )}
 
       {user && (
-      <SubMenu icon={<SettingOutlined />} title={user.email && user.email.split('@')[0]} className="float-right">
-        <Item key="setting:1">Option 1</Item>
-        <Item key="setting:2">Option 2</Item>
-        <Item icon={<LogoutOutlined />} onClick={logout}>
-          Logout
-        </Item>
-      </SubMenu>
+        <SubMenu
+          icon={<SettingOutlined />}
+          title="Seol"
+          className="float-right"
+        >
+          <Item icon={<FolderAddOutlined />}>
+            <Link to="/manage/subjects">Manage Subject</Link>
+          </Item>
+          <Item icon={<FileAddOutlined />}>
+            <Link to="/create/note">Create Note</Link>
+          </Item>
+          <Item icon={<LogoutOutlined />} onClick={logout}>
+            Logout
+          </Item>
+        </SubMenu>
       )}
     </Menu>
   );

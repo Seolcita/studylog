@@ -1,30 +1,24 @@
-import React, {useEffect} from "react";
-import {Switch, Route} from 'react-router-dom'
+import React, { useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
-import { currentUser } from "./functions/auth";
+import { currentUser } from "./connections/auth";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //paths
-import Home from './pages/Home'
-import Login from './pages/auth/Login'
-import Register from './pages/auth/Register'
-import Header from './components/nav/Header'
-import RegisterComplete from './pages/auth/RegisterComplete'
-import ForgotPassword from './pages/auth/ForgotPassword'
-import History from "./pages/user/History";
-import Password from "./pages/user/Password";
-import Wishlist from "./pages/user/Wishlist";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-
-import UserRoute from "./components/routes/UserRoute";
+import Home from "./pages/Home";
+import Login from "./pages/auth/Login";
+import Header from "./components/nav/Header";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import AdminRoute from "./components/routes/AdminRoute";
+import ManageSubject from "./pages/ManageSubject";
+import CreateNote from "./pages/CreateNote";
+import EditSubject from "./pages/EditSubject";
 
 const App = () => {
-
   const dispatch = useDispatch();
 
   // to check firebase auth state
@@ -34,7 +28,7 @@ const App = () => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
         console.log("user", user);
-        
+
         currentUser(idTokenResult.token)
           .then((res) => {
             dispatch({
@@ -57,21 +51,20 @@ const App = () => {
 
   return (
     <>
-    <Header />
-    <ToastContainer />
-    <Switch>
-      <Route exact path="/" component={Home}/>      
-      <Route exact path="/login" component={Login}/>
-      <Route exact path="/register" component={Register}/>
-      <Route exact path="/register/complete" component={RegisterComplete}/>
-      <Route exact path="/forgot/password" component={ForgotPassword}/>
-      <UserRoute exact path="/user/history" component={History} />
-      <UserRoute exact path="/user/password" component={Password} />
-      <UserRoute exact path="/user/wishlist" component={Wishlist} />
-      <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
-    </Switch>
+      <Header />
+      <ToastContainer />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/forgot/password" component={ForgotPassword} />
+        <AdminRoute exact path="/manage/subjects" component={ManageSubject} />
+        <AdminRoute exact path="/create/note" component={CreateNote} />
+        <AdminRoute exact path="/edit/subject/:slug" component={EditSubject} />
+
+        {/* <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} /> */}
+      </Switch>
     </>
-  )
-}
+  );
+};
 
 export default App;
