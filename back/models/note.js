@@ -29,6 +29,10 @@ const noteSchema = new mongoose.Schema(
     images: {
       type: Array,
     },
+    reference: {
+      type: String,
+      trim: true,
+    },
   },
   { timestamp: true }
 );

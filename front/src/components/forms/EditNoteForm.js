@@ -4,9 +4,14 @@ import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const NoteForm = ({ handleSubmit, handleChange, values }) => {
+const UpdateNoteForm = ({
+  handleSubmit,
+  handleChange,
+  values,
+  allSubjects,
+}) => {
   //destructure
-  const { title, note, subjects, reference } = values;
+  const { title, note, reference } = values;
 
   return (
     <div>
@@ -17,14 +22,23 @@ const NoteForm = ({ handleSubmit, handleChange, values }) => {
             name="subject"
             className="form-control"
             onChange={handleChange}
+            value={values.subject._id}
           >
-            <option>- Please select -</option>
-            {subjects.length > 0 &&
-              subjects.map((s) => (
-                <option key={s._id} value={s._id}>
-                  {s.name}
-                </option>
-              ))}
+            {values ? (
+              <option value={values.subject._id}>{values.subject.name}</option>
+            ) : (
+              <option>"no subject"</option>
+            )}
+
+            {allSubjects.length > 0 &&
+              allSubjects
+                .filter((s) => s._id !== values.subject._id)
+                .map((s) => (
+                  <option key={s._id} value={s._id}>
+                    {s.name}
+                  </option>
+                  // setSelectedSubject()
+                ))}
           </select>
         </div>
 
@@ -64,8 +78,9 @@ const NoteForm = ({ handleSubmit, handleChange, values }) => {
 
         <button className="btn btn-outline-info">Save</button>
       </form>
+      {/* {JSON.stringify(subject)} */}
     </div>
   );
 };
 
-export default NoteForm;
+export default UpdateNoteForm;

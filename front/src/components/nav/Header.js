@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 //antd
 import { Menu } from "antd";
 import {
-  AppstoreOutlined,
   SettingOutlined,
   UserOutlined,
-  UserAddOutlined,
+  FormOutlined,
   LogoutOutlined,
   FolderAddOutlined,
   FileAddOutlined,
@@ -41,8 +40,8 @@ const Header = () => {
 
   return (
     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
-      <Item key="home" icon={<AppstoreOutlined />}>
-        <Link to="/">Home</Link>
+      <Item key="home" icon={<FormOutlined />}>
+        <Link to="/">Seol's study logs</Link>
       </Item>
 
       {!user && (

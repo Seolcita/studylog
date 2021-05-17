@@ -84,7 +84,7 @@ const ManageSubject = () => {
         {/* {JSON.stringify(name)} // check whether subject name stored in name state */}
         <br />
         <div className="mt-5">
-          <h2>Managing Subjects</h2>
+          <h2>Manage Subjects</h2>
         </div>
         {/*{JSON.stringify(subjects)} // check whether subject object is retrieved from DB */}
         {subjects.map((s) => (

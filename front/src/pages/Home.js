@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getNotes, removeNote, getNotesCount } from "../connections/note";
@@ -64,7 +65,6 @@ const Home = () => {
     <>
       <div className="container mt-5">
         <h1>Study Log</h1>
-
         {/* {JSON.stringify(notes)} */}
         <table className="table table-hover mt-5">
           <thead>
@@ -102,18 +102,23 @@ const Home = () => {
               <tbody className="table table-hover" key={i}>
                 <tr>
                   <td width="10%">{i + 1}</td>
-                  <td width="50%">{n.title}</td>
+                  <td width="50%">
+                    <Link to={`/note/${n.slug}`}>{n.title}</Link>
+                  </td>
                   <td width="20%">{n.subject.name}</td>
                   {user && user.role === "admin" ? null : (
                     <td width="20%" scope="col">
                       {new Date(n.subject.createdAt).toLocaleDateString()}
                     </td>
                   )}
+
                   {user && user.role === "admin" && (
                     <td width="10%">
-                      <span className="btn btn-sm">
-                        <EditOutlined />
-                      </span>
+                      <Link to={`/note/edit/${n.slug}`}>
+                        <span className="btn btn-sm">
+                          <EditOutlined />
+                        </span>
+                      </Link>
                     </td>
                   )}
 

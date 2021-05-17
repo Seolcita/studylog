@@ -27,3 +27,18 @@ export const removeNote = async (slug, authtoken) => {
 export const getNotesCount = async () => {
   return await axios.get(`${process.env.REACT_APP_API}/notes/total`);
 };
+
+export const getOneNote = async (slug) => {
+  console.log("did I get slug from front?", slug);
+  return await axios.get(`${process.env.REACT_APP_API}/note/${slug}`);
+};
+
+export const updateNote = async (slug, values, authtoken) => {
+  console.log("values", values);
+
+  return await axios.put(`${process.env.REACT_APP_API}/note/${slug}`, values, {
+    headers: {
+      authtoken,
+    },
+  });
+};

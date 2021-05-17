@@ -54,3 +54,32 @@ exports.countNotes = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.getOneNote = async (req, res) => {
+  try {
+    console.log("one note - slug", req.params.slug);
+    const slug = req.params.slug;
+    const foundNote = await Note.findOne({ slug }).populate("subject").exec();
+    res.json(foundNote);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.update = async (req, res) => {
+  console.log("note body ------>", req.body);
+  const slug = req.params.slug;
+  const title = req.body.title;
+  const values = req.body;
+  try {
+    if (title) {
+      req.body.slug = slugify(title);
+    }
+    const updated = await Note.findOneAndUpdate({ slug }, values, {
+      new: true,
+    }).exec();
+    res.json(updated);
+  } catch (error) {
+    console.log(error);
+  }
+};

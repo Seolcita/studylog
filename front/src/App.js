@@ -17,6 +17,8 @@ import AdminRoute from "./components/routes/AdminRoute";
 import ManageSubject from "./pages/ManageSubject";
 import CreateNote from "./pages/CreateNote";
 import EditSubject from "./pages/EditSubject";
+import DetailNote from "./pages/DetailNote";
+import EditNote from "./pages/EditNote";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -60,6 +62,9 @@ const App = () => {
         <AdminRoute exact path="/manage/subjects" component={ManageSubject} />
         <AdminRoute exact path="/create/note" component={CreateNote} />
         <AdminRoute exact path="/edit/subject/:slug" component={EditSubject} />
+        <Route exact path="/note/edit/:slug" component={EditNote} />
+
+        <Route exact path="/note/:slug" component={DetailNote} />
 
         {/* <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} /> */}
       </Switch>
