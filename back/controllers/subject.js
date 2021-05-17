@@ -5,7 +5,7 @@ exports.create = async (req, res) => {
   try {
     const { name } = req.body;
     const subjectName = await new Subject({ name, slug: slugify(name) }).save();
-    console.log("subjectName----->", subjectName);
+    // console.log("subjectName----->", subjectName);
     res.json(subjectName);
   } catch (error) {
     res.status(400).send("Create category failed");
@@ -15,7 +15,7 @@ exports.create = async (req, res) => {
 exports.list = async (req, res) => {
   try {
     const subjectList = await Subject.find({}).sort({ createdAt: -1 }).exec();
-    console.log("all subject =====>", subjectList);
+    // console.log("all subject =====>", subjectList);
     res.json(subjectList);
   } catch (error) {
     res.json(error);
@@ -44,7 +44,7 @@ exports.getSubject = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  console.log("subject name?", req.body);
+  // console.log("subject name?", req.body);
   try {
     const { subject } = req.body;
     const updated = await Subject.findOneAndUpdate(

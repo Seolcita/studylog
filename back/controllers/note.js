@@ -4,7 +4,7 @@ const slugify = require("slugify");
 
 exports.create = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     req.body.slug = slugify(req.body.title);
     const newNote = await new Note(req.body).save();
     res.json(newNote);
@@ -35,7 +35,7 @@ exports.allNotes = async (req, res) => {
 
 exports.remove = async (req, res) => {
   try {
-    console.log("slug from front?", req.params.slug);
+    // console.log("slug from front?", req.params.slug);
 
     const slug = req.params.slug;
     const deletedNote = await Note.findOneAndDelete({ slug: slug });
@@ -57,7 +57,7 @@ exports.countNotes = async (req, res) => {
 
 exports.getOneNote = async (req, res) => {
   try {
-    console.log("one note - slug", req.params.slug);
+    // console.log("one note - slug", req.params.slug);
     const slug = req.params.slug;
     const foundNote = await Note.findOne({ slug }).populate("subject").exec();
     res.json(foundNote);
@@ -67,7 +67,7 @@ exports.getOneNote = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  console.log("note body ------>", req.body);
+  // console.log("note body ------>", req.body);
   const slug = req.params.slug;
   const title = req.body.title;
   const values = req.body;
@@ -81,5 +81,41 @@ exports.update = async (req, res) => {
     res.json(updated);
   } catch (error) {
     console.log(error);
+  }
+};
+
+exports.searchFilters = async (req, res) => {
+  console.log("argument?", req.body);
+  const { query, subject } = req.body;
+
+  // search by user search input
+  if (query) {
+    await handleQuery(req, res, query);
+  }
+
+  // search by subjects
+  if (subject) {
+    console.log("subject", subject);
+    await handleSubject(req, res, subject);
+  }
+};
+
+const handleQuery = async (req, res, query) => {
+  const notes = await Note.find({ $text: { $search: query } })
+    .populate("subject", "_id name")
+    .exec();
+
+  res.json(notes);
+};
+
+const handleSubject = async (req, res, subject) => {
+  try {
+    let subjects = await Note.find({ subject })
+      .populate("subject", "_id name")
+      .exec();
+
+    res.json(subjects);
+  } catch (error) {
+    console.log(err);
   }
 };

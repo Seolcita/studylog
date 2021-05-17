@@ -6,10 +6,10 @@ exports.createOrUpdateUser = async (req, res) => {
   const user = await User.findOneAndUpdate(
     { email }, //first argument: find one based on email
     { name: email.split("@")[0], picture }, //second argument : once the email found, update name and picture
-    { new: true }//third argument-optional: response with updated info
+    { new: true } //third argument-optional: response with updated info
   );
   if (user) {
-    console.log("USER UPDATED", user);
+    // console.log("USER UPDATED", user);
     res.json(user);
   } else {
     const newUser = await new User({

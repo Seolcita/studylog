@@ -42,3 +42,7 @@ export const updateNote = async (slug, values, authtoken) => {
     },
   });
 };
+
+export const fetchNotesByFilter = async (arg) => {
+  return await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);
+};

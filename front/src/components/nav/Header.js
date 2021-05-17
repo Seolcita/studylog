@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
+import Search from "../forms/Search";
 
 //antd
 import { Menu } from "antd";
@@ -67,6 +68,10 @@ const Header = () => {
           </Item>
         </SubMenu>
       )}
+
+      <span className="float-right p-1">
+        <Search />
+      </span>
     </Menu>
   );
 };

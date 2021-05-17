@@ -12,6 +12,7 @@ const {
   countNotes,
   getOneNote,
   update,
+  searchFilters,
 } = require("../controllers/note");
 
 router.post("/note", authCheck, adminCheck, create);
@@ -20,5 +21,6 @@ router.delete("/note/:slug", authCheck, adminCheck, remove);
 router.get("/notes/total", countNotes);
 router.get("/note/:slug", getOneNote);
 router.put("/note/:slug", authCheck, adminCheck, update);
+router.post("/search/filters", searchFilters);
 
 module.exports = router;
