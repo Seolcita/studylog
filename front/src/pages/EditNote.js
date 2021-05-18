@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import FileUpload from "../components/forms/FileUpload";
+import EditFileUpload from "../components/forms/EditFileUpload";
 import EditNoteForm from "../components/forms/EditNoteForm";
 import { getOneNote, updateNote } from "../connections/note";
 import { getSubjects } from "../connections/subject";
 import { toast } from "react-toastify";
 
+//img-carousel
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
-const init = {
-  title: "",
-  note: "",
-  images: [],
-  subject: "",
-};
 
 const EditNote = ({ match, history }) => {
   //state
-  const [values, setValues] = useState(init);
+  const [values, setValues] = useState({});
   const [allSubjects, setAllSubjects] = useState([]);
+  const [originalSubject, setOriginalSubject] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
+  const [subjectName, setSubjectName] = useState("");
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   //destructure
-  const { title, note, subject, subjects, images } = values;
+  //const { title, note, subject, subjects, images } = values;
 
   //redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -36,16 +34,15 @@ const EditNote = ({ match, history }) => {
     loadSubjects();
   }, []);
 
-  // useEffect(() => {
-  //   loadSubjects();
-  // }, []);
-
   const loadOneNote = () => {
     getOneNote(slug)
       .then((res) => {
-        console.log("Got one note?", res.data);
+        console.log("Got one note?", res);
         setValues(res.data);
-        // toast.success("Note is successfully updated");
+        setOriginalSubject(res.data.subject._id);
+        setSubjectName(res.data.subject._id);
+        setImages(res.data.images);
+        console.log("images======>", res.data.images);
       })
       .catch((err) => {
         console.log(err);
@@ -68,6 +65,9 @@ const EditNote = ({ match, history }) => {
     e.preventDefault();
     setLoading(true);
 
+    values.subject = selectedSubject ? selectedSubject : originalSubject;
+    values.images = selectedSubject ? images : values.images;
+
     updateNote(slug, values, user.token)
       .then((res) => {
         setLoading(false);
@@ -86,15 +86,27 @@ const EditNote = ({ match, history }) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const handleText = (e, editor) => {
+    const data = editor.getData();
+    setValues({ ...values, note: data });
+  };
+
+  const handleSubject = (e) => {
+    console.log("selected subject", e.target.value);
+    setSelectedSubject(e.target.value);
+  };
+
   return (
     <div className="container">
       <h1>Edit Note</h1>
-      {/* {JSON.stringify(oneNote)} */}
+
+      {JSON.stringify(values)}
+      {JSON.stringify(images)}
 
       <div className="p-3">
-        <FileUpload
-          values={values}
-          setValues={setValues}
+        <EditFileUpload
+          images={images}
+          setImages={setImages}
           setLoading={setLoading}
         />
       </div>
@@ -103,24 +115,14 @@ const EditNote = ({ match, history }) => {
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           values={values}
+          handleText={handleText}
           allSubjects={allSubjects}
+          originalSubject={originalSubject}
+          handleSubject={handleSubject}
+          selectedSubject={selectedSubject}
+          subjectName={subjectName}
         />
       </div>
-      {/* {allSubjects ? allSubjects.map((s) => <p key={s._id}>{s.name}</p>) : "no"} */}
-      {/* {JSON.stringify(values.subjects)} */}
-
-      {/* <div>
-        <label className="form-group"> Title </label>
-        <p className="form-control mb-4"> {title}</p>
-        <label className="form-group"> Subject </label>
-        {values ? (
-          <p className="form-control mb-4">{values.subject.name}</p>
-        ) : (
-          <h1>"no subject"</h1>
-        )}
-        <label className="form-group"> Note </label>
-        <p className="form-control mb-4">{note}</p>
-      </div> */}
     </div>
   );
 };

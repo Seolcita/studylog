@@ -1,43 +1,42 @@
 import React from "react";
 
-//css
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+//text editor
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const UpdateNoteForm = ({
   handleSubmit,
   handleChange,
   values,
   allSubjects,
+  handleText,
+  handleSubject,
+  selectedSubject,
+  originalSubject,
+  subjectName,
 }) => {
   //destructure
-  const { title, note, reference } = values;
+  const { title, note, reference, subject } = values;
 
   return (
     <div>
+      {JSON.stringify(subject)}
       <form onSubmit={handleSubmit}>
         <div className="form-group mb-5">
           <label className="h4">Subject</label>
           <select
             name="subject"
             className="form-control"
-            onChange={handleChange}
-            value={values.subject._id}
+            onChange={handleSubject}
+            value={selectedSubject ? selectedSubject : originalSubject}
           >
-            {values ? (
-              <option value={values.subject._id}>{values.subject.name}</option>
-            ) : (
-              <option>"no subject"</option>
-            )}
-
             {allSubjects.length > 0 &&
               allSubjects
-                .filter((s) => s._id !== values.subject._id)
+                // .filter((s) => s._id !== originalSubject)
                 .map((s) => (
                   <option key={s._id} value={s._id}>
                     {s.name}
                   </option>
-                  // setSelectedSubject()
                 ))}
           </select>
         </div>
@@ -55,14 +54,7 @@ const UpdateNoteForm = ({
 
         <div className="form-group mb-5">
           <label className="h4">Note</label>
-          <textarea
-            type="text"
-            name="note"
-            className="form-control"
-            value={note}
-            onChange={handleChange}
-            rows="10"
-          />
+          <CKEditor editor={ClassicEditor} data={note} onChange={handleText} />
         </div>
 
         <div className="form-group mb-5">

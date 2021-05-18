@@ -1,10 +1,12 @@
 import React from "react";
 
+//text editor
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 //css
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const NoteForm = ({ handleSubmit, handleChange, values }) => {
+const NoteForm = ({ handleSubmit, handleChange, values, handleText }) => {
   //destructure
   const { title, note, subjects, reference } = values;
 
@@ -41,14 +43,15 @@ const NoteForm = ({ handleSubmit, handleChange, values }) => {
 
         <div className="form-group mb-5">
           <label className="h4">Note</label>
-          <textarea
+          {/* <textarea
             type="text"
             name="note"
             className="form-control"
             value={note}
             onChange={handleChange}
             rows="10"
-          />
+          /> */}
+          <CKEditor editor={ClassicEditor} data={note} onChange={handleText} />
         </div>
 
         <div className="form-group mb-5">

@@ -184,7 +184,7 @@ const Home = () => {
                   {/* regular users see note create date */}
                   {user && user.role === "admin" ? null : (
                     <th width="20%" scope="col">
-                      Created At
+                      Posted
                     </th>
                   )}
                   {/* only admin can edit and delete notes */}

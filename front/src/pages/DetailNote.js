@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { getOneNote } from "../connections/note";
 import { toast } from "react-toastify";
 import { Carousel } from "react-responsive-carousel";
+
+//parse html - text editor content(note)
+import ReactHtmlParse from "react-html-parser";
+
+//img-carousel
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const DetailNote = ({ match }) => {
@@ -59,7 +64,7 @@ const DetailNote = ({ match }) => {
         <p className="form-control mb-4"> {title}</p>
 
         <label className="form-group"> Note </label>
-        <p className="form-control mb-4">{note}</p>
+        <p className="form-control mb-4">{ReactHtmlParse(note)}</p>
         <label className="form-group"> Reference </label>
         <p className="form-control mb-4">
           {reference ? (

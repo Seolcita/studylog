@@ -60,6 +60,11 @@ const CreateNote = ({ history }) => {
     console.log(e.target.name, " ----- ", e.target.value);
   };
 
+  const handleText = (e, editor) => {
+    const data = editor.getData();
+    setValues({ ...values, note: data });
+  };
+
   return (
     <div className="container mt-5">
       <h1>Create Form</h1>
@@ -75,6 +80,7 @@ const CreateNote = ({ history }) => {
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         values={values}
+        handleText={handleText}
       />
     </div>
   );
