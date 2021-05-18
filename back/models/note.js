@@ -34,7 +34,7 @@ const noteSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Note", noteSchema);

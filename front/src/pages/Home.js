@@ -211,7 +211,7 @@ const Home = () => {
                       <td width="20%">{n.subject.name}</td>
                       {user && user.role === "admin" ? null : (
                         <td width="20%" scope="col">
-                          {new Date(n.subject.createdAt).toLocaleDateString()}
+                          {new Date(n.createdAt).toLocaleDateString()}
                         </td>
                       )}
 
